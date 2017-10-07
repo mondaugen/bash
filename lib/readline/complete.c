@@ -173,6 +173,10 @@ int _rl_complete_mark_symlink_dirs = 0;
    like `ls -x'. */
 int _rl_print_completions_horizontally;
 
+/* If non-zero, completions are preceded with a number which can be used in
+ * conjunction with (arg)menu-complete to choose the (arg)th completion. */
+int _rl_numbered_completion_display;
+
 /* Non-zero means that case is not significant in filename completion. */
 #if (defined (__MSDOS__) && !defined (__DJGPP__)) || (defined (_WIN32) && !defined (__CYGWIN__))
 int _rl_completion_case_fold = 1;
@@ -1569,6 +1573,14 @@ rl_display_match_list (char **matches, int len, int max)
   /* How many items of MAX length can we fit in the screen window? */
   cols = complete_get_screenwidth ();
   max += 2;
+  int lend = 1;
+  int compi = 1;
+  if (_rl_numbered_completion_display)
+  {
+      int lent = len;
+      while ( lent /= 10 ) { lend++; }
+      max += lend + 1;
+  }
   limit = cols / max;
   if (limit != 1 && (limit * max == cols))
     limit--;
@@ -1608,7 +1620,12 @@ rl_display_match_list (char **matches, int len, int max)
 	      else
 		{
 		  temp = printable_part (matches[l]);
-		  printed_len = print_filename (temp, matches[l], sind);
+          if (_rl_numbered_completion_display) {
+              printed_len = fprintf(rl_outstream,"%*d ",lend,l);
+              printed_len += print_filename (temp, matches[l], sind);
+          } else {
+              printed_len = print_filename (temp, matches[l], sind);
+          }
 
 		  if (j + 1 < limit)
 		    {
@@ -1643,7 +1660,12 @@ rl_display_match_list (char **matches, int len, int max)
       for (i = 1; matches[i]; i++)
 	{
 	  temp = printable_part (matches[i]);
-	  printed_len = print_filename (temp, matches[i], sind);
+      if (_rl_numbered_completion_display) {
+          printed_len = fprintf(rl_outstream,"%*d ",lend,compi++);
+		  printed_len += print_filename (temp, matches[l], sind);
+      } else {
+		  printed_len = print_filename (temp, matches[l], sind);
+      }
 	  /* Have we reached the end of this line? */
 #if defined (SIGWINCH)
 	  if (RL_SIG_RECEIVED () && RL_SIGWINCH_RECEIVED() == 0)

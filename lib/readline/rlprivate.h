@@ -459,6 +459,7 @@ extern int _rl_match_hidden_files;
 extern int _rl_page_completions;
 extern int _rl_skip_completed_text;
 extern int _rl_menu_complete_prefix_first;
+extern int _rl_numbered_completion_display;
 
 /* display.c */
 extern int _rl_vis_botlin;

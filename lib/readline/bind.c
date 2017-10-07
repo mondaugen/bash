@@ -1516,6 +1516,7 @@ static const struct {
   { "match-hidden-files",	&_rl_match_hidden_files,	0 },
   { "menu-complete-display-prefix", &_rl_menu_complete_prefix_first, 0 },
   { "meta-flag",		&_rl_meta_flag,			0 },
+  { "numbered-completion-display", &_rl_numbered_completion_display, 0 },
   { "output-meta",		&_rl_output_meta_chars,		0 },
   { "page-completions",		&_rl_page_completions,		0 },
   { "prefer-visible-bell",	&_rl_prefer_visible_bell,	V_SPECIAL },
