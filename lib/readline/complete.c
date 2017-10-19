@@ -1574,7 +1574,6 @@ rl_display_match_list (char **matches, int len, int max)
   cols = complete_get_screenwidth ();
   max += 2;
   int lend = 1;
-  int compi = 1;
   if (_rl_numbered_completion_display)
   {
       int lent = len;
@@ -1661,10 +1660,10 @@ rl_display_match_list (char **matches, int len, int max)
 	{
 	  temp = printable_part (matches[i]);
       if (_rl_numbered_completion_display) {
-          printed_len = fprintf(rl_outstream,"%*d ",lend,compi++);
-		  printed_len += print_filename (temp, matches[l], sind);
+          printed_len = fprintf(rl_outstream,"%*d ",lend,i);
+		  printed_len += print_filename (temp, matches[i], sind);
       } else {
-		  printed_len = print_filename (temp, matches[l], sind);
+		  printed_len = print_filename (temp, matches[i], sind);
       }
 	  /* Have we reached the end of this line? */
 #if defined (SIGWINCH)
